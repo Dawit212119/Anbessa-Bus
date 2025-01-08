@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { ArrowLeftIcon, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowLeft from "../components/arrowLeft";
+import { useDispatch, useSelector } from "react-redux";
+import { signInSuccess } from "../redux/user/userSlice";
 
 const Signin = () => {
   const navigate = useNavigate();
+  // const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     phoneNumber: "",
     password: "",
@@ -26,8 +30,10 @@ const Signin = () => {
       setError("Phone number must be in the format +251XXXXXXXXX.");
       return;
     }
-
+    dispatch(signInSuccess(formData));
+    // navigate("/");
     console.log(formData);
+    // console.log(currentUser);
   };
 
   return (

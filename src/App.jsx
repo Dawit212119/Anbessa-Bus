@@ -8,7 +8,7 @@ import Footer from "./components/Footer";
 import Request from "./pages/Request";
 import "leaflet/dist/leaflet.css";
 import View from "./pages/view";
-import Privateroute from "./components/Privateroute";
+// import Privateroute from "./components/Privateroute";
 
 function App() {
   return (
@@ -22,9 +22,9 @@ function App() {
             <Route path="/" element={<Header />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
-            <Route element={<Privateroute />}>
-              <Route path="/request" element={<Request />} />
-            </Route>
+            {/* <Route element={<Privateroute />}> */}
+            <Route path="/request" element={<Request />} />
+            {/* </Route> */}
             <Route path="/view" element={<View />} />
           </Routes>
         </div>
