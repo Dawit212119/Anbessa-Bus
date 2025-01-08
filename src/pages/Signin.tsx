@@ -28,7 +28,6 @@ const Signin = () => {
     }
 
     console.log(formData);
-    navigate("/");
   };
 
   return (
