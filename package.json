@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.8.0",
+    "@mui/material": "^5.8.0",
+    "@mui/x-data-grid": "^5.8.0",
     "@reduxjs/toolkit": "^2.5.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.469.0",
@@ -18,8 +21,7 @@
     "react-leaflet": "^4.2.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.1",
-    "react-search": "^2.1.1",
-    "react-select": "^5.9.0",
+    "react-select": "^5.2.0",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
