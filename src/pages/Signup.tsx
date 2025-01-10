@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import { X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import ArrowLeft from "../components/arrowLeft";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    email: "",
     phoneNumber: "",
-    password: "",
-    Fullname: "",
-    OTP: "",
+    password: "", // Ensure password is included
+    firstName: "",
+    lastName: "",
+    username: "",
     confirmPassword: "",
   });
   const [error, setError] = useState<string>("");
 
   // Handle form submission
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -24,22 +24,50 @@ const Signup = () => {
       setError("Password must be greater than 4 characters.");
       return;
     }
-    const phoneNumberRegex = /^\+251\d{9}$/;
+    const phoneNumberRegex = /^9\d{8}$/;
     if (!phoneNumberRegex.test(formData.phoneNumber)) {
-      setError("Phone number must be in the format +251920245372.");
+      setError("Phone number must be in the format 920245372.");
       return;
     }
-    if (formData.password != formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setError("The password must match");
       return;
     }
-    console.log(formData);
-    navigate("/");
+
+    const userData = {
+      email: formData.email,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      phone: formData.phoneNumber,
+      username: formData.username,
+      password: formData.password, // Include password in the request
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      navigate("/");
+    } catch (error) {
+      setError("Failed to sign up. Please try again.");
+      console.error("Error:", error);
+    }
   };
 
   return (
     <>
-      <div className="max-w-lg mx-auto  bg-black  p-10">
+      <div className="max-w-lg mx-auto bg-black p-10">
         <div className="bg-gray-900 p-8 rounded-lg w-full max-w-md relative">
           <ArrowLeft />
           <div className="flex justify-center mb-8 border-b border-gray-800 pb-4">
@@ -49,16 +77,62 @@ const Signup = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Full Name
+                Email
               </label>
               <input
-                type="tel"
+                type="email"
                 className="w-full bg-gray-800 rounded-lg px-4 py-2 text-white"
-                placeholder="Full name"
-                value={formData.Fullname}
+                placeholder="Enter your email"
+                value={formData.email}
                 onChange={(e) =>
-                  setFormData({ ...formData, Fullname: e.target.value })
+                  setFormData({ ...formData, email: e.target.value })
                 }
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Username
+              </label>
+              <input
+                type="text"
+                className="w-full bg-gray-800 rounded-lg px-4 py-2 text-white"
+                placeholder="Username"
+                value={formData.username}
+                onChange={(e) =>
+                  setFormData({ ...formData, username: e.target.value })
+                }
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                First Name
+              </label>
+              <input
+                type="text"
+                className="w-full bg-gray-800 rounded-lg px-4 py-2 text-white"
+                placeholder="First name"
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Last Name
+              </label>
+              <input
+                type="text"
+                className="w-full bg-gray-800 rounded-lg px-4 py-2 text-white"
+                placeholder="Last name"
+                value={formData.lastName}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
+                required
               />
             </div>
             <div>
@@ -73,6 +147,7 @@ const Signup = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, phoneNumber: e.target.value })
                 }
+                required
               />
             </div>
             <div>
@@ -87,6 +162,7 @@ const Signup = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
+                required
               />
             </div>
             <div>
@@ -101,6 +177,7 @@ const Signup = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, confirmPassword: e.target.value })
                 }
+                required
               />
             </div>
 
